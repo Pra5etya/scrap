@@ -7,17 +7,26 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = "sampling"
+from dotenv import load_dotenv
+import os
 
-SPIDER_MODULES = ["sampling.spiders"]
-NEWSPIDER_MODULE = "sampling.spiders"
+load_dotenv(dotenv_path = '.env.secret')
 
+# BOT_NAME = "sampling"
+
+# SPIDER_MODULES = ["sampling.spiders"]
+# NEWSPIDER_MODULE = "sampling.spiders"
+
+BOT_NAME = os.getenv('BOT_NAME')
+SPIDER_MODULES = [os.getenv('SPIDER_MODULES')]
+NEWSPIDER_MODULE = os.getenv('NEWSPIDER_MODULE')
+ROBOTSTXT_OBEY = os.getenv('ROBOTSTXT_OBEY')
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = "sampling (+http://www.yourdomain.com)"
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+# ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -25,7 +34,10 @@ ROBOTSTXT_OBEY = True
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-#DOWNLOAD_DELAY = 3
+# DOWNLOAD_DELAY = 3
+DOWNLOAD_DELAY = float(os.getenv('DOWNLOAD_DELAY', 1))  # Convert to float with default value 1
+
+
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
