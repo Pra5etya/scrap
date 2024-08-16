@@ -58,7 +58,11 @@ run spider: \
     scrapy crawl name_of_spider_in_script
 
 save data: \
-    scrapy crawl name_of_spider_in_script -o name.format_type (JSON, CSV, atau XML)
+1. save new row \
+    scrapy crawl name_of_spider_in_script -o name.format_type (JSON, CSV, atau XML) \
+    
+2. overwrite data \
+    scrapy crawl name_of_spider_in_script -O name.format_type (JSON, CSV, atau XML)
 
 
 customize scrapy (must in scrapy project)
@@ -75,3 +79,52 @@ customize scrapy (must in scrapy project)
     # use xpath
     response.xpath('//a/text').extract() \
     cara membacanya yakni: ambil semua elemen a yang terdapat text lalu ektraksi 
+
+
+note (banned IP)
+================================
+1. User Agents (Fingger Point): 
+    user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+    (KHTML, like Gecko) Chrome/98.0.4758.82 Safari/53736
+
+    Scrapy/VERSION (+https://scrapy.org)
+
+    Googlebot/2.1 (+http://www.google.com/bot.html)
+
+    => to resolve this matter add another installer: 
+    ```pip install scrapy-user-agents```
+    then change DOWNLOADER_MIDDLEWARES = {
+        ```
+        'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None, 
+        'scrapy_user_agents.middlewares.RandomUserAgentMiddleware': 400,
+        ```
+    }
+
+2. Rotating IP with proxy
+3. Use VPN
+
+save data (feed exporter)
+================================
+1. use FEEDS on setting: 
+    FEEDS = {
+        'data/%(name)s/%(name)s_%(time)s.csv: {'format': 'csv (etc)'}
+    }
+
+2. custom_settings = {
+    'FEEDS': {'name_of_file': {'format': 'csv (etc)'}}
+}
+
+3. use bacth on setting: 
+    FEEDS = {
+        'data/%(name)s/%(name)s_%(time)s_batch_%(batch_id)d.csv: {
+            'format': 'csv (etc)', 
+            'batch_item_count': 5 or any sum parsing data
+        } 
+    }
+
+
+
+
+LINK for learn:
+================================
+https://thepythonscrapyplaybook.com/
